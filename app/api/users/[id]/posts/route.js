@@ -1,5 +1,6 @@
 import { connectToDB } from "@utils/database";
 import Prompt from '@models/prompt'
+import { NextResponse } from "next/server";
 
 export const GET = async(req,{params}) =>{
 
@@ -9,11 +10,11 @@ export const GET = async(req,{params}) =>{
         const id = params.id;
         const prompts = await Prompt.find({creator:id}).populate('creator');
 
-        return new Response(JSON.stringify(prompts),{status:200})
+        return NextResponse.json(prompts,{status:200})
 
     } catch (err) {
         console.log(err)
-        return new Response("failed to get prompts",{status:500})
+        return NextResponse.json({message:"failed to get prompts"},{status:500})
     }
 
 }

@@ -1,5 +1,6 @@
 import { connectToDB } from "@utils/database";
 import Prompt from '@models/prompt'
+import { NextResponse } from "next/server";
 
 export const GET = async(req,{params}) =>{
 
@@ -10,15 +11,15 @@ export const GET = async(req,{params}) =>{
         const prompt = await Prompt.findById(id).populate('creator');
 
         if(!prompt){
-            return new Response("prompt not found",{status:404})
+            return NextResponse.json({message:"prompt not found"},{status:404})
         }
 
 
-        return new Response(JSON.stringify(prompt),{status:200})
+        return NextResponse.json(prompt,{status:200})
 
     } catch (err) {
         console.log(err)
-        return new Response("failed to get prompt",{status:500})
+        return NextResponse.json({message:"failed to get prompt"},{status:404})
     }
 
 }
@@ -33,19 +34,19 @@ export const PATCH = async(req,{params}) =>{
         const existingPrompt = await Prompt.findById(params.id);
 
         if(!existingPrompt){
-            return new Response("prompt not found",{status:404})
+            return NextResponse.json({message:"prompt not found"},{status:404})
         }
 
         existingPrompt.prompt = prompt;
         existingPrompt.tag = tag;
         await existingPrompt.save();
 
-        return new Response(JSON.stringify(existingPrompt),{status:200})
+        return NextResponse.json(existingPrompt,{status:200})
 
 
     } catch (err) {
         console.log(err)
-        return new Response("failed to update prompt",{status:500})
+        return NextResponse.json({message:"failed to update prompt"},{status:500})
     }
 }
 
@@ -57,11 +58,11 @@ export const DELETE = async(req,{params}) =>{
 
         await Prompt.findByIdAndDelete(params.id);
 
-        return new Response("prompt deleted successfully",{status:200})
+        return NextResponse.json({message:"prompt deleted successfully"},{status:200})
         
     } catch (err) {
         console.log(err)
-        return new Response("failed to delete prompt",{status:500})
+        return NextResponse.json({message:"failed to delete prompt"},{status:500})
     }
 
 }
