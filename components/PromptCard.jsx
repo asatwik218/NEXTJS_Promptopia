@@ -33,7 +33,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
           onClick={handleProfileClick}
         >
-          {post.creator.image && (
+          {post && (
             <Image
               src={post.creator.image}
               alt="user_image"
